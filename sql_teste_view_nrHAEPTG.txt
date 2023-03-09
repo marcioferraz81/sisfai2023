@@ -1,0 +1,28 @@
+CREATE VIEW viewDocentePTG AS
+SELECT  d.matricula_docente as matricula, d.nome_docente as nome, count(d.matricula_docente) as ptgs, numeroHAEsPTG(count(d.matricula_docente)) as nrHAE
+FROM docente as d, vinculoptg as v
+where d.matricula_docente = v.professor
+GROUP BY d.matricula_docente;
+
+
+
+DELIMITER $$
+CREATE FUNCTION numeroHAEsPTG (horas INT)
+RETURNS int
+
+BEGIN
+	DECLARE mostrar INT;
+    SET mostrar = 0;
+IF (horas > 0 AND horas <= 5) THEN
+	SET mostrar = 1;
+ELSEIF(horas <= 10) THEN
+    SET mostrar = 2;
+ELSEIF(horas <= 15) THEN
+    SET mostrar = 3;
+END IF;
+
+RETURN mostrar;
+END$$
+DELIMITER ;
+
+

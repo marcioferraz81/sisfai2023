@@ -1,0 +1,22 @@
+DELIMITER &&
+CREATE PROCEDURE enviarTrabalho (IN var_ra bigint, var_semestre int, var_titulo varchar(100), var_video varchar(100), var_drive varchar(100))
+BEGIN
+	DECLARE consulta INT;
+	DECLARE consulta2 INT;
+    	SET consulta = (SELECT COUNT(*) FROM vinculotg WHERE (aluno = var_ra OR dupla_tg = var_ra) AND semestre = var_semestre);
+
+	IF (consulta = 0) THEN
+		SET consulta2 = (SELECT COUNT(*) FROM vinculoptg WHERE (aluno = var_ra OR dupla_ptg = var_ra) AND semestre = var_semestre);        
+        	IF (consulta2 = 0) THEN
+			SELECT 'Não encontrado' AS Msg;
+		ELSE
+			UPDATE vinculoptg SET titulo = var_titulo, link_video = var_video, link_drive = var_drive WHERE (aluno = var_ra OR dupla_ptg = var_ra) AND semestre = var_semestre;
+			COMMIT;
+		END IF;
+	ELSE
+		UPDATE vinculotg SET titulo = var_titulo, link_video = var_video, link_drive = var_drive WHERE (aluno = var_ra OR dupla_tg = var_ra) AND semestre = var_semestre;
+			COMMIT;
+		END IF;
+END
+&&
+

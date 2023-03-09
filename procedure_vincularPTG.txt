@@ -1,0 +1,45 @@
+BEGIN
+ DECLARE cont int;
+ DECLARE hae int;
+ SET cont = (SELECT count(*) FROM vinculoptg where professor = professor);
+ SET cont=cont+1;
+ SET hae = (SELECT qtdHAE FROM docente WHERE matricula_docente = professor);
+ IF(hae=0)
+            THEN
+            SELECT "Professor não possui mais horas disponíveis para orientação";
+            ROLLBACK;
+ELSEIF(cont=5 OR cont=10 OR cont=15 OR cont=20 OR cont=25 OR cont=30)
+THEN
+UPDATE docente SET qtdHAE=qtdHAE-1 where matricula_docente=professor;
+INSERT INTO vinculoptg (professor,aluno,semestre,dupla_ptg) VALUES (professor,aluno,semestre,dupla);
+            COMMIT;
+ELSE
+INSERT INTO vinculoptg (professor,aluno,semestre,dupla_ptg) VALUES (professor,aluno,semestre,dupla);
+COMMIT;
+END IF;
+END
+
+-------------------------------------------------
+
+DELIMITER $
+CREATE TRIGGER atualizarHAEPTG AFTER DELETE ON vinculoptg
+FOR EACH ROW
+BEGIN
+	UPDATE docente SET qtdHAE = OLD.qtdHAE WHERE matricula_docente = OLD.matricula_docente;
+END$
+DELIMITER ;
+
+-------------------------------------------------
+DELIMITER $$
+CREATE FUNCTION acertarHAEPTG (matricula INT)
+RETURNS int
+BEGIN
+	DECLARE mostrar INT;
+    SET mostrar = (SELECT qtdHAE FROM docente WHERE matricula_docente = matricula);
+IF (mostrar = 5 OR mostrar = 10 OR mostrar = 15 OR mostrar = 20 OR mostrar =25 OR mostrar = 30) THEN 
+	UPDATE docente SET qtdHAE=qtdHAE+1 where matricula_docente=matricula;
+END IF;
+RETURN mostrar;
+
+END$$
+DELIMITER ;
