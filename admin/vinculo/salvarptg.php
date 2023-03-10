@@ -59,7 +59,7 @@ if (isset($ra)) {
                     <?php
                     //include_once '../class/VinculoPTG.php';
                     //$docAluno = new VinculoPTG();
-                    $consultaAluno = $vinculoptg->consultarAluno($_SESSION['curso']);
+                    $consultaAluno = $vinculoptg->consultarAlunoAdmin($_SESSION['curso']);
                     foreach ($consultaAluno as $mostrar) {
                         ?>
                         <option value="<?= $mostrar[0] ?>" <?= isset($id) && $aluno == $mostrar[0] ? "selected" : "" ?>><?= $mostrar[4] ?></option>

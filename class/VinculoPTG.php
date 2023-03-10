@@ -9,6 +9,7 @@ class VinculoPTG {
     private $semestre;
     private $dupla;
     private $primeira_nota;
+    private $con;
 
     public function getPrimeira_nota() {
         return $this->primeira_nota;
@@ -192,11 +193,46 @@ class VinculoPTG {
     function consultarAluno($curso) {
         try {
             $this->con = new Conectar();
+            /*
             $sql = "SELECT * FROM aluno "
-                    . "WHERE (ra_aluno NOT IN (SELECT aluno FROM vinculoptg)) "
-                    . "AND (ra_aluno NOT IN (SELECT dupla_ptg FROM vinculoptg)) "
-                    . "AND semestre = ? AND tipo_trabalho = 'ptg' AND id_curso = ? "
-                    . "ORDER BY nome_aluno";
+                . "WHERE (ra_aluno NOT IN (SELECT aluno FROM vinculoptg)) "
+                . "AND (ra_aluno NOT IN (SELECT dupla_ptg FROM vinculoptg)) "
+                . "AND semestre = ? AND tipo_trabalho = 'ptg' AND id_curso = ? "
+                . "ORDER BY nome_aluno";
+                */
+            $sql = "SELECT * FROM aluno "
+                . "WHERE (ra_aluno NOT IN (SELECT aluno FROM vinculoptg)) "
+                . "AND (ra_aluno NOT IN (SELECT dupla_ptg FROM vinculoptg)) "
+                . "AND semestre = ? AND tipo_trabalho = 'ptg' AND id_curso = ? "
+                . "ORDER BY nome_aluno";
+
+            $executar = $this->con->prepare($sql);
+            $executar->bindValue(1, date('Y') . (date('m') < 7 ? 1 : 2));
+            $executar->bindValue(2, $curso);
+
+            if ($executar->execute() == 1) {
+                return $executar->fetchAll();
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
+    function consultarAlunoAdmin($curso) {
+        try {
+            $this->con = new Conectar();
+            /*
+            $sql = "SELECT * FROM aluno "
+                . "WHERE (ra_aluno NOT IN (SELECT aluno FROM vinculoptg)) "
+                . "AND (ra_aluno NOT IN (SELECT dupla_ptg FROM vinculoptg)) "
+                . "AND semestre = ? AND tipo_trabalho = 'ptg' AND id_curso = ? "
+                . "ORDER BY nome_aluno";
+                */
+            $sql = "SELECT * FROM aluno "
+                . "WHERE semestre = ? AND tipo_trabalho = 'ptg' AND id_curso = ? "
+                . "ORDER BY nome_aluno";
 
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, date('Y') . (date('m') < 7 ? 1 : 2));

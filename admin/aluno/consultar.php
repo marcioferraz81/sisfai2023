@@ -1,6 +1,10 @@
 
 <?php
 include_once 'cabecalho.php';
+
+include_once '../class/Curso.php';
+$curso = new Curso();
+$consulta = $curso->consultar();
 ?>
 <div class="col-sm-12 mb-4">
     <h1 class="mt-3 text-primary">
