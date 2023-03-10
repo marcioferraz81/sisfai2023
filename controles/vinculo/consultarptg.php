@@ -23,7 +23,7 @@ include_once 'cabecalho.php';
                     echo '<a class = "btn btn-link float-right" href = "?p=../class/ExportarXLSX">Exportar Vínculos</a>';
                     echo '<a class = "btn btn-success float-right mr-2" href = "?p=vinculo/salvarptg"><i class="bi bi-pencil-square"></i> Incluir vínculo</a>' . "</h3>";
                     //$dados = $c->consultar();
-                    $dados = $c->consultar($_SESSION['curso']);
+                    $dados = $c->consultarCoordenador($_SESSION['curso']);
                     foreach ($dados as $mostrar) {
                         ?>
                         <tr>

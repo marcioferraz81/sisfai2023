@@ -102,6 +102,34 @@ class VinculoTG {
             echo $exc->getMessage();
         }
     }
+
+    function consultarCoordenador($curso) {
+        try {
+            $this->con = new Conectar();
+            //$sql = "SELECT * FROM listar_vinculotg";
+            $sql = "SELECT tg.professor AS professor, tg.aluno AS aluno, tg.semestre AS semestre, 
+                tg.dupla_tg AS dupla_tg, d.nome_docente AS nome_docente, a.nome_aluno AS nome_aluno, 
+                retornar_nome_dupla(tg.dupla_tg) AS dupla, tg.id_vinculotg as vinculo, tg.primeira_nota as nota
+                FROM vinculotg tg, docente d, aluno a 
+                WHERE tg.professor = d.matricula_docente AND tg.aluno = a.ra_aluno AND a.id_curso = ? AND tg.semestre = ? 
+                ORDER BY a.nome_aluno ASC;";
+
+        $ano = date('Y');
+        $semestre = date('m') > 7 ? 2 :1;
+
+            $executar = $this->con->prepare($sql);
+            $executar->bindValue(1, $curso);
+            $executar->bindValue(2, $ano . $semestre);
+
+            if ($executar->execute() == 1) {
+                return $executar->fetchAll();
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
     function consultar2($curso, $semestre) {
         try {
             $this->con = new Conectar();

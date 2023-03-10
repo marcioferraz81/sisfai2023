@@ -1,6 +1,8 @@
 
 <?php
 include_once 'cabecalho.php';
+
+
 ?>
 
 <?php
@@ -57,9 +59,9 @@ if (isset($ra)) {
             <div class="col-sm-10">
                 <select class="form-control" aria-label="Default select example" name="selaluno" id="selaluno" required>
                     <?php
-                    //include_once '../class/VinculoPTG.php';
-                    //$docAluno = new VinculoPTG();
-                    $consultaAluno = $vinculoptg->consultarAlunoAdmin($_SESSION['curso']);
+                    include_once '../class/Curso.php';
+                    $cu = new Curso();
+                    $consultaAluno = $cu->cursoPesquisar();
                     foreach ($consultaAluno as $mostrar) {
                         ?>
                         <option value="<?= $mostrar[0] ?>" <?= isset($id) && $aluno == $mostrar[0] ? "selected" : "" ?>><?= $mostrar[4] ?></option>

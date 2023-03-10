@@ -26,12 +26,13 @@ $curso = "";
 $nome = "";
 
 $cu->setMatricula_coord($matricula);
-$contarHAE = $cu->contarHAE();
+$contarHAE = $cu->cursoPesquisar();
 foreach ($contarHAE as $mostrar) {
     $haes = $mostrar[0];
     $periodo = $mostrar[1];
     $nome = $mostrar[2];
     $_SESSION['nome_curso'] = $nome;
+    $curso = $mostrar[3];
     $a->setId_curso($mostrar[3]);
     $a->setSemestre(date('Y') . $semestre);
     $nr_alunos = $a->contarPorCurso();

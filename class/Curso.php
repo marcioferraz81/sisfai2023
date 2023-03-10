@@ -145,4 +145,20 @@ class Curso {
         }
     }
 
+    function cursoPesquisar() {
+        try {
+            $this->con = new Conectar();
+            $sql = "SELECT horas, periodo_curso, nome_curso, id_curso FROM curso";
+            $executar = $this->con->prepare($sql);
+
+            if ($executar->execute() == 1) {
+                return $executar->fetchAll();
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
 }

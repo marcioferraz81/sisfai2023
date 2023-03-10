@@ -104,6 +104,34 @@ class VinculoPTG {
             echo $exc->getMessage();
         }
     }
+
+    function consultarCoordenador($curso) {
+        try {
+            $this->con = new Conectar();
+            //$sql = "SELECT * FROM listar_vinculoptg";
+            $sql = "SELECT ptg.professor AS professor, ptg.aluno AS aluno, ptg.semestre AS semestre, ptg.dupla_ptg AS dupla_ptg, " .
+                    "d.nome_docente AS nome_docente, a.nome_aluno AS nome_aluno, " .
+                    "retornar_nome_dupla(ptg.dupla_ptg) AS dupla, ptg.id_vinculoptg as vinculo, ptg.primeira_nota as nota " .
+                    "FROM vinculoptg ptg, docente d, aluno a " .
+                    "WHERE ptg.professor = d.matricula_docente AND ptg.aluno = a.ra_aluno AND a.id_curso = ? AND ptg.semestre = ? "
+                    . "ORDER BY a.nome_aluno ASC";
+
+            $ano = date('Y');
+            $semestre = date('m') > 7 ? 2 :1;
+
+            $executar = $this->con->prepare($sql);
+            $executar->bindValue(1, $curso);
+            $executar->bindValue(2, $ano . $semestre);
+
+            if ($executar->execute() == 1) {
+                return $executar->fetchAll();
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
     function consultar2($curso, $semestre) {
         try {
             $this->con = new Conectar();
@@ -220,33 +248,7 @@ class VinculoPTG {
         }
     }
 
-    function consultarAlunoAdmin($curso) {
-        try {
-            $this->con = new Conectar();
-            /*
-            $sql = "SELECT * FROM aluno "
-                . "WHERE (ra_aluno NOT IN (SELECT aluno FROM vinculoptg)) "
-                . "AND (ra_aluno NOT IN (SELECT dupla_ptg FROM vinculoptg)) "
-                . "AND semestre = ? AND tipo_trabalho = 'ptg' AND id_curso = ? "
-                . "ORDER BY nome_aluno";
-                */
-            $sql = "SELECT * FROM aluno "
-                . "WHERE semestre = ? AND tipo_trabalho = 'ptg' AND id_curso = ? "
-                . "ORDER BY nome_aluno";
-
-            $executar = $this->con->prepare($sql);
-            $executar->bindValue(1, date('Y') . (date('m') < 7 ? 1 : 2));
-            $executar->bindValue(2, $curso);
-
-            if ($executar->execute() == 1) {
-                return $executar->fetchAll();
-            } else {
-                return false;
-            }
-        } catch (PDOException $exc) {
-            echo $exc->getMessage();
-        }
-    }
+   
 
     function consultarAluno2() {
         try {

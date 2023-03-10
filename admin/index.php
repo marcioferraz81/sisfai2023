@@ -64,13 +64,14 @@ include_once 'cabecalho.php';
                             <a class="dropdown-item" href="?p=aluno/pesquisarSemVinculo">Sem vínculo PTG/TG</a>
                         </div>
                     </li>
-
+<!--
                     <li class="nav-item">
                         <a class="nav-link" href="?p=vinculo/consultarptg">Vinculo PTG</a>
                     </li>    
                     <li class="nav-item">
                         <a class="nav-link" href="?p=vinculotg/consultartg">Vinculo TG</a>
                     </li>    
+        -->
                     <li class="nav-item">
                         <a class="nav-link" href="?p=usuario/alterarSenha">Alterar Senha</a>
                     </li>    
