@@ -2,7 +2,8 @@
 
 include_once 'Conectar.php';
 
-class Aluno {
+class Aluno
+{
 
     private $ra;
     private $status;
@@ -16,87 +17,108 @@ class Aluno {
     private $tipo_trabalho;
     private $con;
 
-    public function getRa() {
+    public function getRa()
+    {
         return $this->ra;
     }
 
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->status;
     }
 
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    public function getFone() {
+    public function getFone()
+    {
         return $this->fone;
     }
 
-    public function getNome() {
+    public function getNome()
+    {
         return $this->nome;
     }
 
-    public function getTipo() {
+    public function getTipo()
+    {
         return $this->tipo;
     }
 
-    public function getSemestre() {
+    public function getSemestre()
+    {
         return $this->semestre;
     }
 
-    public function getSenha() {
+    public function getSenha()
+    {
         return $this->senha;
     }
 
-    public function getId_curso() {
+    public function getId_curso()
+    {
         return $this->id_curso;
     }
 
-    public function setRa($ra) {
+    public function setRa($ra)
+    {
         $this->ra = $ra;
     }
 
-    public function setStatus($status) {
+    public function setStatus($status)
+    {
         $this->status = $status;
     }
 
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
     }
 
-    public function setFone($fone) {
+    public function setFone($fone)
+    {
         $this->fone = $fone;
     }
 
-    public function setNome($nome) {
+    public function setNome($nome)
+    {
         $this->nome = $nome;
     }
 
-    public function setTipo($tipo) {
+    public function setTipo($tipo)
+    {
         $this->tipo = $tipo;
     }
 
-    public function setSemestre($semestre) {
+    public function setSemestre($semestre)
+    {
         $this->semestre = $semestre;
     }
 
-    public function setSenha($senha) {
+    public function setSenha($senha)
+    {
         $this->senha = $senha;
     }
 
-    public function setId_curso($id_curso) {
+    public function setId_curso($id_curso)
+    {
         $this->id_curso = $id_curso;
     }
 
-    public function getTipo_trabalho() {
+    public function getTipo_trabalho()
+    {
         return $this->tipo_trabalho;
     }
 
-    public function setTipo_trabalho($tipo_trabalho): void {
+    public function setTipo_trabalho($tipo_trabalho): void
+    {
         $this->tipo_trabalho = $tipo_trabalho;
     }
 
-    function salvar() {
+    public function salvar()
+    {
         try {
             /*
              * ra, statusa, email, fone, nome, tipoUsuario, semestre, senha, curso
@@ -123,7 +145,8 @@ class Aluno {
         }
     }
 
-    function consultar() {
+    public function consultar()
+    {
         try {
             $this->con = new Conectar();
             $sql = "SELECT a.*, c.* FROM aluno as a, curso as c WHERE a.id_curso = c.id_curso ORDER BY a.nome_aluno";
@@ -134,7 +157,8 @@ class Aluno {
         }
     }
 
-    function consultarPorID() {
+    public function consultarPorID()
+    {
         try {
             $this->con = new Conectar();
             $sql = "SELECT a.*, c.* FROM aluno as a, curso as c WHERE a.ra_aluno = ? AND a.id_curso = c.id_curso";
@@ -151,7 +175,8 @@ class Aluno {
         }
     }
 
-    function consultarPorCurso() {
+    public function consultarPorCurso()
+    {
         try {
             $this->con = new Conectar();
             $sql = "SELECT a.*, c.* FROM aluno as a, curso as c WHERE a.id_curso = ? AND a.id_curso = c.id_curso";
@@ -168,14 +193,15 @@ class Aluno {
         }
     }
 
-    function consultarPtgPorSemestre() {
+    public function consultarPtgPorSemestre()
+    {
         try {
             $this->con = new Conectar();
             $sql = "SELECT a.*, c.* FROM aluno as a, curso as c "
-                    . "WHERE a.id_curso = ? "
-                    . "AND a.id_curso = c.id_curso "
-                    . "AND a.semestre = ?  "
-                    . "AND a.tipo_trabalho = 'ptg'";
+                . "WHERE a.id_curso = ? "
+                . "AND a.id_curso = c.id_curso "
+                . "AND a.semestre = ?  "
+                . "AND a.tipo_trabalho = 'ptg'";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $this->id_curso);
             $executar->bindValue(2, $this->semestre);
@@ -190,12 +216,13 @@ class Aluno {
         }
     }
 
-    function pesquisar() {
+    public function pesquisar()
+    {
         try {
             $this->con = new Conectar();
             $sql = "SELECT a.*, c.* FROM aluno as a, curso as c "
-                    . "WHERE a.id_curso = ? AND a.semestre = ? AND a.tipo_trabalho = ? "
-                    . "AND a.id_curso = c.id_curso ORDER BY a.nome_aluno";
+                . "WHERE a.id_curso = ? AND a.semestre = ? AND a.tipo_trabalho = ? "
+                . "AND a.id_curso = c.id_curso ORDER BY a.nome_aluno";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $this->id_curso);
             $executar->bindValue(2, $this->semestre);
@@ -211,13 +238,14 @@ class Aluno {
         }
     }
 
-    function pesquisarIndefinidos() {
+    public function pesquisarIndefinidos()
+    {
         try {
             $this->con = new Conectar();
             $sql = "SELECT a.*, c.* FROM aluno as a, curso as c "
-                    . "WHERE a.id_curso = ? AND a.semestre = ? AND "
-                    . "(a.ra_aluno NOT IN (SELECT ra_aluno FROM aluno WHERE a.tipo_trabalho = 'tg' OR a.tipo_trabalho = 'ptg')) "
-                    . "AND a.id_curso = c.id_curso ORDER BY a.nome_aluno";
+                . "WHERE a.id_curso = ? AND a.semestre = ? AND "
+                . "(a.ra_aluno NOT IN (SELECT ra_aluno FROM aluno WHERE a.tipo_trabalho = 'tg' OR a.tipo_trabalho = 'ptg')) "
+                . "AND a.id_curso = c.id_curso ORDER BY a.nome_aluno";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $this->id_curso);
             $executar->bindValue(2, $this->semestre);
@@ -232,13 +260,14 @@ class Aluno {
         }
     }
 
-    function pesquisarPTG() {
+    public function pesquisarPTG()
+    {
         try {
             $this->con = new Conectar();
             $sql = "SELECT t.titulo, t.link_video, t.link_drive, t.primeira_nota "
-                    . "FROM vinculoptg t "
-                    . "INNER JOIN aluno a ON (t.aluno = a.ra_aluno OR t.dupla_ptg = a.ra_aluno) "
-                    . "WHERE t.semestre = ? AND a.ra_aluno = ?;";
+                . "FROM vinculoptg t "
+                . "INNER JOIN aluno a ON (t.aluno = a.ra_aluno OR t.dupla_ptg = a.ra_aluno) "
+                . "WHERE t.semestre = ? AND a.ra_aluno = ?;";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, date('Y') . (date('m') < 7 ? 1 : 2));
             $executar->bindValue(2, $this->ra);
@@ -253,10 +282,11 @@ class Aluno {
         }
     }
 
-    function pesquisarTG() {
+    public function pesquisarTG()
+    {
         try {
             $this->con = new Conectar();
-            $sql = "SELECT t.titulo, t.link_video, t.link_drive, t.primeira_nota 
+            $sql = "SELECT t.titulo, t.link_video, t.link_drive, t.primeira_nota
                     FROM vinculotg t
                     INNER JOIN aluno a ON t.aluno = a.ra_aluno OR t.dupla_tg = a.ra_aluno
                     WHERE t.semestre = ? AND (t.aluno = ? OR dupla_tg = ?)";
@@ -275,12 +305,13 @@ class Aluno {
         }
     }
 
-    function pesquisarTrabalho() {
+    public function pesquisarTrabalho()
+    {
         try {
             $this->con = new Conectar();
             $sql = "SELECT t.titulo, t.link_video, t.link_drive "
-                    . "FROM vinculotg as t, aluno a "
-                    . "WHERE t.semestre = ? AND a.ra_aluno = ? AND t.aluno = a.ra_aluno OR t.dupla_tg = a.ra_aluno;";
+                . "FROM vinculotg as t, aluno a "
+                . "WHERE t.semestre = ? AND a.ra_aluno = ? AND t.aluno = a.ra_aluno OR t.dupla_tg = a.ra_aluno;";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, date('Y') . (date('m') < 7 ? 1 : 2));
             $executar->bindValue(2, $this->ra);
@@ -295,16 +326,17 @@ class Aluno {
         }
     }
 
-    function pesquisarSemVinculo() {
+    public function pesquisarSemVinculo()
+    {
         try {
             $this->con = new Conectar();
             $sql = "SELECT a.*, c.* FROM aluno as a, curso as c "
-                    . "WHERE a.id_curso = ? AND a.semestre = ? "
-                    . "AND (a.ra_aluno NOT IN (SELECT aluno FROM vinculoptg)) "
-                    . "AND (ra_aluno NOT IN (SELECT dupla_ptg FROM vinculoptg)) "
-                    . "AND (a.ra_aluno NOT IN (SELECT aluno FROM vinculotg)) "
-                    . "AND (ra_aluno NOT IN (SELECT dupla_tg FROM vinculotg)) "
-                    . "AND a.id_curso = c.id_curso ORDER BY a.tipo_trabalho, a.nome_aluno";
+                . "WHERE a.id_curso = ? AND a.semestre = ? "
+                . "AND (a.ra_aluno NOT IN (SELECT aluno FROM vinculoptg)) "
+                . "AND (ra_aluno NOT IN (SELECT dupla_ptg FROM vinculoptg)) "
+                . "AND (a.ra_aluno NOT IN (SELECT aluno FROM vinculotg)) "
+                . "AND (ra_aluno NOT IN (SELECT dupla_tg FROM vinculotg)) "
+                . "AND a.id_curso = c.id_curso ORDER BY a.tipo_trabalho, a.nome_aluno";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $this->id_curso);
             $executar->bindValue(2, $this->semestre);
@@ -319,17 +351,18 @@ class Aluno {
         }
     }
 
-    function pesquisarSemVinculoPorRA() {
+    public function pesquisarSemVinculoPorRA()
+    {
         try {
             $this->con = new Conectar();
             $ano = date('Y');
             $semestre = date('m') < 7 ? 1 : 2;
             $sql = "SELECT a.ra_aluno FROM aluno as a "
-                    . "WHERE a.semestre = ? AND a.ra_aluno = ? "
-                    . "AND (a.ra_aluno NOT IN (SELECT aluno FROM vinculoptg)) "
-                    . "AND (a.ra_aluno NOT IN (SELECT dupla_ptg FROM vinculoptg)) "
-                    . "AND (a.ra_aluno NOT IN (SELECT aluno FROM vinculotg)) "
-                    . "AND (a.ra_aluno NOT IN (SELECT dupla_tg FROM vinculotg));";
+                . "WHERE a.semestre = ? AND a.ra_aluno = ? "
+                . "AND (a.ra_aluno NOT IN (SELECT aluno FROM vinculoptg)) "
+                . "AND (a.ra_aluno NOT IN (SELECT dupla_ptg FROM vinculoptg)) "
+                . "AND (a.ra_aluno NOT IN (SELECT aluno FROM vinculotg)) "
+                . "AND (a.ra_aluno NOT IN (SELECT dupla_tg FROM vinculotg));";
 
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $ano . $semestre);
@@ -341,7 +374,8 @@ class Aluno {
         }
     }
 
-    function editar() {
+    public function editar()
+    {
         try {
             $this->con = new Conectar();
             $sql = "UPDATE aluno SET id_curso = ?, semestre = ?, nome_aluno = ?, status_aluno = ?, tipo_trabalho = ? WHERE ra_aluno = ?";
@@ -364,7 +398,8 @@ class Aluno {
         }
     }
 
-    function editarAluno() {
+    public function editarAluno()
+    {
         try {
             $this->con = new Conectar();
             $sql = "UPDATE aluno SET email_aluno = ?, fone_aluno = ? WHERE ra_aluno = ?";
@@ -384,7 +419,8 @@ class Aluno {
         }
     }
 
-    function enviarTrabalho($titulo, $link_video, $link_drive, $table) {
+    public function enviarTrabalho($titulo, $link_video, $link_drive, $table)
+    {
         try {
             $this->con = new Conectar();
             //$sql = "CALL enviarTrabalho(?,?,?,?,?);";
@@ -394,11 +430,11 @@ class Aluno {
             //anotação de 03/02/2023
             /*
              * $sql = "UPDATE " . $table . " SET titulo = ?, link_video = ?, link_drive = ? "
-              . "WHERE " . $campo . " = ?;";
+            . "WHERE " . $campo . " = ?;";
              */
 
             $sql = "UPDATE " . $table . " SET titulo = ?, link_video = ?, link_drive = ? "
-                    . "WHERE (aluno = ? OR " . $campo . " = ?) AND semestre = ?;";
+                . "WHERE (aluno = ? OR " . $campo . " = ?) AND semestre = ?;";
             $executar = $this->con->prepare($sql);
             //passar parametros para as interrogações
             $executar->bindValue(4, trim($this->ra), PDO::PARAM_INT);
@@ -418,7 +454,8 @@ class Aluno {
         }
     }
 
-    function excluir() {
+    public function excluir()
+    {
         try {
             $this->con = new Conectar();
             $sql = "DELETE FROM aluno WHERE ra_aluno = ?";
@@ -435,7 +472,8 @@ class Aluno {
         }
     }
 
-    function contarPorCurso() {
+    public function contarPorCurso()
+    {
         try {
             $this->con = new Conectar();
             $sql = "SELECT count(ra_aluno) FROM aluno WHERE id_curso = ? AND semestre = ?";
@@ -453,14 +491,15 @@ class Aluno {
         }
     }
 
-    function pesquisarAvaliacaoBancaPTG() {
+    public function pesquisarAvaliacaoBancaPTG()
+    {
         try {
             $this->con = new Conectar();
             $sql = "SELECT b.tipoBanca as banca, d.nome_docente as professor, b.notaBanca as nota, b.comentario as comentario, v.primeira_nota as nota_orientador, v.id_vinculoPTG as vinculo "
-                    . "FROM bancaptg b, docente d, vinculoptg v "
-                    . "WHERE d.matricula_docente = b.professor "
-                    . "AND v.id_vinculoPTG = b.vinculoPTG "
-                    . "AND v.aluno = ? OR v.dupla_ptg = ?";
+                . "FROM bancaptg b, docente d, vinculoptg v "
+                . "WHERE d.matricula_docente = b.professor "
+                . "AND v.id_vinculoPTG = b.vinculoPTG "
+                . "AND v.aluno = ? OR v.dupla_ptg = ?";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $this->ra);
             $executar->bindValue(2, $this->ra);
@@ -470,14 +509,15 @@ class Aluno {
         }
     }
 
-    function pesquisarAvaliacaoBancaTG() {
+    public function pesquisarAvaliacaoBancaTG()
+    {
         try {
             $this->con = new Conectar();
             $sql = "SELECT b.tipoBanca as banca, d.nome_docente as professor, b.notaBanca_Final as nota, b.comentario as comentario, v.primeira_nota as nota_orientador, v.id_vinculoTG as vinculo "
-                    . "FROM bancatg b, docente d, vinculotg v "
-                    . "WHERE d.matricula_docente = b.professor "
-                    . "AND v.id_vinculoTG = b.vinculoTG "
-                    . "AND v.aluno = ? OR v.dupla_tg = ?";
+                . "FROM bancatg b, docente d, vinculotg v "
+                . "WHERE d.matricula_docente = b.professor "
+                . "AND v.id_vinculoTG = b.vinculoTG "
+                . "AND v.aluno = ? OR v.dupla_tg = ?";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $this->ra);
             $executar->bindValue(2, $this->ra);

@@ -3,7 +3,8 @@
 include_once 'Conectar.php';
 include_once 'Controles.php';
 
-class Assinatura {
+class Assinatura
+{
 
     private $matricula;
     private $arquivo;
@@ -12,106 +13,119 @@ class Assinatura {
     private $ct;
     private $caminho = "../assinatura/";
 
-    public function getMatricula() {
+    public function getMatricula()
+    {
         return $this->matricula;
     }
 
-    public function getArquivo() {
+    public function getArquivo()
+    {
         return $this->arquivo;
     }
 
-    public function getTemp_arquivo() {
+    public function getTemp_arquivo()
+    {
         return $this->temp_arquivo;
     }
 
-    public function setMatricula($matricula): void {
+    public function setMatricula($matricula): void
+    {
         $this->matricula = $matricula;
     }
 
-    public function setArquivo($arquivo): void {
+    public function setArquivo($arquivo): void
+    {
         $this->arquivo = $arquivo;
     }
 
-    public function setTemp_arquivo($temp_arquivo): void {
+    public function setTemp_arquivo($temp_arquivo): void
+    {
         $this->temp_arquivo = $temp_arquivo;
     }
 
-    function salvar() {
+    public function salvar()
+    {
         try {
             $this->con = new Conectar();
             $sql = $this->con->prepare("INSERT INTO assinatura VALUES (null, ?, ?)");
             $sql->bindValue(1, $this->matricula, PDO::PARAM_INT);
             $sql->bindValue(2, $this->arquivo, PDO::PARAM_STR);
 
-            return ($sql->execute() == 1 ? TRUE : FALSE);
+            return ($sql->execute() == 1 ? true : false);
         } catch (PDOException $exc) {
             echo "Erro ao salvar " . $exc->getMessage();
         }
     }
 
-    function enviarArquivos() {
+    public function enviarArquivos()
+    {
         $this->ct = new Controles();
         return $this->ct->enviarArquivo($this->temp_arquivo, $this->caminho . $this->arquivo, "Assinatura");
     }
 
-    function consultar() {
+    public function consultar()
+    {
         try {
             $this->con = new Conectar();
             $sql = $this->con->prepare("SELECT a.*, d.* "
-                    . "FROM assinatura a, docente d "
-                    . "WHERE a.matricula_docente = d.matricula_docente");
-            return ($sql->execute() == 1 ? $sql->fetchAll() : FALSE);
+                . "FROM assinatura a, docente d "
+                . "WHERE a.matricula_docente = d.matricula_docente");
+            return ($sql->execute() == 1 ? $sql->fetchAll() : false);
         } catch (PDOException $exc) {
             echo "Erro ao salvar " . $exc->getMessage();
         }
     }
 
-    function pesquisarPorID() {
+    public function pesquisarPorID()
+    {
         try {
             $this->con = new Conectar();
             $sql = $this->con->prepare("SELECT a.* "
-                    . "FROM assinatura a "
-                    . "INNER JOIN docente d ON a.matricula_docente = d.matricula_docente "
-                    //. "WHERE a.matricula_docente = d.matricula_docente "
-                    . "WHERE a.matricula_docente = ?");
+                . "FROM assinatura a "
+                . "INNER JOIN docente d ON a.matricula_docente = d.matricula_docente "
+                //. "WHERE a.matricula_docente = d.matricula_docente "
+                . "WHERE a.matricula_docente = ?");
             $sql->bindValue(1, $this->matricula, PDO::PARAM_INT);
 
-            return ($sql->execute() == 1 ? $sql->fetchAll() : FALSE);
+            return ($sql->execute() == 1 ? $sql->fetchAll() : false);
         } catch (PDOException $exc) {
             echo "Erro ao salvar " . $exc->getMessage();
         }
     }
-    
-    function consultarMatricula() {
+
+    public function consultarMatricula()
+    {
         try {
             $this->con = new Conectar();
             $sql = $this->con->prepare("SELECT a.* "
-                    . "FROM assinatura a, docente d "
-                    . "WHERE a.matricula_docente = d.matricula_docente "
-                    . "AND a.matricula_docente = ? GROUP BY a.matricula_docente");
+                . "FROM assinatura a, docente d "
+                . "WHERE a.matricula_docente = d.matricula_docente "
+                . "AND a.matricula_docente = ? GROUP BY a.matricula_docente");
             $sql->bindValue(1, $this->matricula, PDO::PARAM_INT);
 
-            return ($sql->execute() == 1 ? $sql->fetchAll() : FALSE);
+            return ($sql->execute() == 1 ? $sql->fetchAll() : false);
         } catch (PDOException $exc) {
             echo "Erro ao salvar " . $exc->getMessage();
         }
     }
 
-    function pesquisarPorID2() {
+    public function pesquisarPorID2()
+    {
         try {
             $this->con = new Conectar();
             $sql = $this->con->prepare("SELECT a.* "
-                    . "FROM assinatura a "
-                    . "WHERE a.matricula_docente = ?");
+                . "FROM assinatura a "
+                . "WHERE a.matricula_docente = ?");
             $sql->bindValue(1, $this->matricula, PDO::PARAM_INT);
 
-            return ($sql->execute() == 1 ? $sql->fetchAll() : FALSE);
+            return ($sql->execute() == 1 ? $sql->fetchAll() : false);
         } catch (PDOException $exc) {
             echo "Erro ao salvar " . $exc->getMessage();
         }
     }
 
-    function excluir() {
+    public function excluir()
+    {
         try {
             $this->con = new Conectar();
             $this->ct = new Controles();

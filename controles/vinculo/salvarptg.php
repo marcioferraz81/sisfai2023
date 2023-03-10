@@ -23,64 +23,64 @@ if (isset($ra)) {
 }
 ?>
 <h1 class="mt-3 text-primary"><!--como fizemos em consultar-->
-    <?= isset($ra) ? "Editar" : "Cadastrar" ?> Vínculo PTG
+    <?=isset($ra) ? "Editar" : "Cadastrar"?> Vínculo PTG
 </h1>
 
 
 <div class="card shadow mt-3"><!-- acrescentei um card com sombra aqui tbm -->
     <form method="post" name="formsalvar" id="formSalvar" class="m-3" enctype="multipart/form-data">
-        <!-- m-3 determinei todas as bordas, não mudei o form-->        
+        <!-- m-3 determinei todas as bordas, não mudei o form-->
         <div class="form-group row">
-            <label for="inputText" class="col-sm-2 col-form-label">            
+            <label for="inputText" class="col-sm-2 col-form-label">
                 Professor
             </label>
             <div class="col-sm-10">
                 <select class="form-control" aria-label="Default select example" name="selprof" id="selprof" required>
                     <?php
-                    //include_once '../class/VinculoPTG.php';
-                    //$doc = new VinculoPTG();
-                    $consulta = $vinculoptg->consultarProfessor();
-                    foreach ($consulta as $mostrar) {
-                        ?>
-                        <option value="<?= $mostrar[0] ?>" <?= isset($id) && $matricula_prof == $mostrar[0] ? "selected" : "" ?>><?= $mostrar[1] ?></option>
+//include_once '../class/VinculoPTG.php';
+//$doc = new VinculoPTG();
+$consulta = $vinculoptg->consultarProfessor();
+foreach ($consulta as $mostrar) {
+    ?>
+                        <option value="<?=$mostrar[0]?>" <?=isset($id) && $matricula_prof == $mostrar[0] ? "selected" : ""?>><?=$mostrar[1]?></option>
                         <?php
-                    }
-                    ?>                
+}
+?>
                 </select>
             </div>
-        </div>              
+        </div>
         <div class="form-group row">
-            <label for="inputText" class="col-sm-2 col-form-label">            
+            <label for="inputText" class="col-sm-2 col-form-label">
                 Aluno
             </label>
             <div class="col-sm-10">
                 <select class="form-control" aria-label="Default select example" name="selaluno" id="selaluno" required>
                     <?php
-                    //include_once '../class/VinculoPTG.php';
-                    //$docAluno = new VinculoPTG();
-                    $consultaAluno = $vinculoptg->consultarAluno($_SESSION['curso']);
-                    foreach ($consultaAluno as $mostrar) {
-                        ?>
-                        <option value="<?= $mostrar[0] ?>" <?= isset($id) && $aluno == $mostrar[0] ? "selected" : "" ?>><?= $mostrar[4] ?></option>
+//include_once '../class/VinculoPTG.php';
+//$docAluno = new VinculoPTG();
+$consultaAluno = $vinculoptg->consultarAluno($_SESSION['curso']);
+foreach ($consultaAluno as $mostrar) {
+    ?>
+                        <option value="<?=$mostrar[0]?>" <?=isset($id) && $aluno == $mostrar[0] ? "selected" : ""?>><?=$mostrar[4]?></option>
                         <?php
-                    }
-                    ?>                
+}
+?>
                 </select>
             </div>
         </div>
         <div class="form-group row">
-            <label for="inputText" class="col-sm-2 col-form-label">            
+            <label for="inputText" class="col-sm-2 col-form-label">
                 Semestre
             </label>
             <div class="col-sm-10">
                 <select class="form-control" aria-label="Default select example" name="selsemestre" id="selsemestre" required>
                     <option selected disabled>Semestre</option>
                     <option value="1">1º semestre</option>
-                    <option value="2">2º semestre</option>            
+                    <option value="2">2º semestre</option>
                 </select>
             </div>
         </div>
-        <!-- Opção de dupla -->    
+        <!-- Opção de dupla -->
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <div class="campo">
@@ -110,34 +110,34 @@ if (isset($ra)) {
                     });
                 </script>
                 <div class="form-group row">
-                    <label for="inputText" class="col-sm-2 col-form-label" >            
+                    <label for="inputText" class="col-sm-2 col-form-label" >
                         Selecione a Dupla
                     </label>
                     <div class="col-sm-10">
                         <select class="form-control" aria-label="Default select example" name="seldupla" id="seldupla" required>
                             <option value="NULL" selected>Sem dupla</option>
                             <?php
-                            //include_once '../class/VinculoPTG.php';
-                            //$doc = new VinculoPTG();
-                            //$consulta = $vinculoptg->consultarAluno();
+//include_once '../class/VinculoPTG.php';
+//$doc = new VinculoPTG();
+//$consulta = $vinculoptg->consultarAluno();
 
-                            foreach ($consultaAluno as $mostrar) {
-                                ?>
-                                <option value="<?= $mostrar[0] ?>"><?= $mostrar[4] ?></option>
+foreach ($consultaAluno as $mostrar) {
+    ?>
+                                <option value="<?=$mostrar[0]?>"><?=$mostrar[4]?></option>
                                 <?php
-                            }
-                            ?>                
+}
+?>
                         </select>
                     </div></div>
                 <!-- Opção de dupla (FIM) -->
 
 
                 <div class="form-group row">
-                    <div class="col-sm-10">            
-                        <input type="submit" 
-                               class="btn btn-primary" 
-                               name="btnsalvar" 
-                               value="Cadastrar">               
+                    <div class="col-sm-10">
+                        <input type="submit"
+                               class="btn btn-primary"
+                               name="btnsalvar"
+                               value="Cadastrar">
                     </div>
                     <!-- faltou um link aqui-->
                     <a href="?p=vinculo/consultarptg" class="btn btn-danger">Voltar</a>
@@ -163,8 +163,7 @@ if (filter_input(INPUT_POST, 'btnsalvar')) {
     $ptg->setDupla($dupla);
     ?>
     <div class="alert alert-primary mt-3" role="alert" >
-        <?= $ptg->salvar() ?>
+        <?=$ptg->salvar()?>
     </div>
     <?php
 }
-
